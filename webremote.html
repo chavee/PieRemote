@@ -1,0 +1,142 @@
+<script src="http://netpie.io/microgear.js"></script>
+
+<script>
+	const target = 'pieremote';
+	const APPKEY = "AeQJGmkm2Wy4VcZ";
+	const APPSECRET = "S96ImTDdQy94oYjMjYgXM2VQT";
+	const APPID = "deerdev";
+
+	var microgear = Microgear.create({
+		key: APPKEY,
+		secret: APPSECRET,
+		alias : "webremote"
+	});
+
+  	function send(msg) {
+	  microgear.chat(target,msg);
+	}
+
+
+	microgear.on('message',function(topic,msg) {
+
+console.log(topic+' ---> '+msg);
+
+		if (topic=='/deerdev/pieremote/ls/default') {
+			var m = msg.split(';');
+
+			var e = document.getElementById('remote');
+			e.innerHTML = "";
+
+			for (var i=0; i<m.length; i++) {
+				e.innerHTML += "<a href=\"#\" class=\"btn btn-blue\" onclick=\"send('ir:/default/"+m[i]+"')\">"+m[i]+"</a>";
+			}
+		}
+
+		if (topic=='/deerdev/pieremote/new') {
+			var newname = prompt('Name your new button');
+			send('mv:'+msg+':'+'/default/'+newname);
+			send('ls:/default');
+		}
+	});
+
+	microgear.on('connected', function() {
+		microgear.subscribe('/pieremote/#');
+		send('ls:/default');
+	    document.getElementById("data").innerHTML = "<FONT color=#00BB00>ONLINE</FONT>";
+	});
+
+	microgear.connect(APPID);
+	
+
+</script>
+
+ <style>
+
+a { text-decoration: none; margin: 0 10px; }
+a.btn {
+	display: inline-block;
+	color: #666;
+	background-color: #eee;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	font-size: 20px;
+	padding: 5px 20px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border: 1px solid rgba(0,0,0,0.3);
+	border-bottom-width: 3px;
+}
+
+a.btn:hover {
+	background-color: #e3e3e3;
+	border-color: rgba(0,0,0,0.5);
+}
+
+a.btn:active {
+	background-color: #CCC;
+	border-color: rgba(0,0,0,0.9);
+}
+
+a.btn.btn-blue {
+	background-color: #699DB6;
+	border-color: rgba(0,0,0,0.3);
+	text-shadow: 0 1px 0 rgba(0,0,0,0.5);
+	color: #FFF;
+}
+
+a.btn.btn-blue:hover {
+	background-color: #4F87A2;
+	border-color: rgba(0,0,0,0.5);
+}
+
+a.btn.btn-blue:active {
+	background-color: #3C677B;
+	border-color: rgba(0,0,0,0.9);
+}
+</style>
+
+<div id="data" align=right><FONT COLOR=#DDDDDD>OFFLINE</FONT></div>
+
+<!--<a href="#" class="btn btn-blue" onclick="send('ls:/default')">reload</a>-->
+<a href="#" class="btn btn-blue" onclick="send('new')">+</a><br><br>
+
+<div id="remote" />
+
+<!--
+<br><br>
+
+<font size=4>TrueRemote powered by NETPIE<br><br>
+<a href="#" class="btn btn-blue" onclick="send('ir:/cv/on')">ON</a>
+<a href="#" class="btn btn-blue" onclick="send('ir:/cv/off')">OFF</a>
+
+<a href="#" class="btn btn-blue" onclick="send('3')">3</a>
+<br><br>
+
+<a href="#" class="btn btn-blue" onclick="send('4')">4</a>
+<a href="#" class="btn btn-blue" onclick="send('5')">5</a>
+<a href="#" class="btn btn-blue" onclick="send('6')">6</a>
+<br><br>
+
+<a href="#" class="btn btn-blue" onclick="send('7')">7</a>
+<a href="#" class="btn btn-blue" onclick="send('8')">8</a>
+<a href="#" class="btn btn-blue" onclick="send('9')">9</a>
+<br><br>
+
+<a href="#" class="btn btn-blue" onclick="send('0')">0</a>
+<a href="#" class="btn btn-blue" onclick="send('VDOWN')">V-</a>
+<a href="#" class="btn btn-blue" onclick="send('VUP')">V+</a>
+<br><br>
+
+<a href="#" class="btn btn-blue" onclick="send('EXIT')">EXIT</a>
+<a href="#" class="btn btn-blue" onclick="send('MUTE')">MUTE</a>
+<br><br>
+
+<a href="#" class="btn btn-blue" onclick="send('MENU')">MENU</a>
+<a href="#" class="btn btn-blue" onclick="send('UP')">UP</a>
+<br><br>
+
+<a href="#" class="btn btn-blue" onclick="send('BACK')">BACK</a>
+<a href="#" class="btn btn-blue" onclick="send('DOWN')">DOWN</a>
+<br><br>
+-->
