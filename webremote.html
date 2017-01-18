@@ -1,10 +1,11 @@
+<!-- web ui for PieRemote -->
+<!-- Beta version         -->
 <script src="http://netpie.io/microgear.js"></script>
-
 <script>
 	const target = 'pieremote';
-	const APPKEY = "AeQJGmkm2Wy4VcZ";
-	const APPSECRET = "S96ImTDdQy94oYjMjYgXM2VQT";
-	const APPID = "deerdev";
+	const APPID = <APPID>;
+	const APPKEY = <KEY>;
+	const APPSECRET = <SECRET>;
 
 	var microgear = Microgear.create({
 		key: APPKEY,
@@ -16,14 +17,10 @@
 	  microgear.chat(target,msg);
 	}
 
-
 	microgear.on('message',function(topic,msg) {
-
-console.log(topic+' ---> '+msg);
 
 		if (topic=='/deerdev/pieremote/ls/default') {
 			var m = msg.split(';');
-
 			var e = document.getElementById('remote');
 			e.innerHTML = "";
 
@@ -46,11 +43,9 @@ console.log(topic+' ---> '+msg);
 	});
 
 	microgear.connect(APPID);
-	
-
 </script>
 
- <style>
+<style>
 
 a { text-decoration: none; margin: 0 10px; }
 a.btn {
